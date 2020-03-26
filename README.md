@@ -54,7 +54,7 @@
 
   
 
--  [PyTorch](https://pytorch.com/) - ML Framework
+-  [PyTorch](https://pytorch.org/) - ML Framework
 
 -  [OpenAI Gym](https://gym.openai.com/) - Environment API
 
