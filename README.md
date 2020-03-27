@@ -107,8 +107,6 @@ def  __init__(self,observationprocessor,hiddenlayers,actionmapper,save_path=None
 	self.policy_net = nn.Sequential(observationprocessor, hiddenlayers, actionmapper)
 	self.value_net = ...
 
-  
-
 def  forward(self, state):
 	return  self.policy_net(state)
 
