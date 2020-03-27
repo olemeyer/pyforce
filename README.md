@@ -96,8 +96,6 @@ agent=PPOAgent(
 from pyforce.agents.base import BaseAgent
 from torch import nn
   
-  
-
 class  MyAgent(BaseAgent):
 
 def  __init__(self,observationprocessor,hiddenlayers,actionmapper,save_path=None):
