@@ -64,7 +64,7 @@ from pyforce.agents import PPOAgent
 import gym
 import torch
 
-device="cuda:0"  if torch.cuda.is_available() else  "cpu"
+device="cuda:0" if torch.cuda.is_available() else "cpu"
 
 env=gym.make("LunarLanderContinuous-v2")
 env=DictEnv(env)
@@ -94,6 +94,7 @@ agent=PPOAgent(
 
 ```python
 from pyforce.agents.base import BaseAgent
+from torch import nn
   
   
 
@@ -103,9 +104,8 @@ def  __init__(self,observationprocessor,hiddenlayers,actionmapper,save_path=None
 
 	super().__init__(save_path)
 
-	self.value_net = nn.Sequential(copy.deepcopy(observationprocessor),copy.deepcopy(hiddenlayers),ValueEstimator(hiddenlayers.n_output))
-
 	self.policy_net = nn.Sequential(observationprocessor, hiddenlayers, actionmapper)
+	self.value_net = ...
 
   
 
@@ -113,14 +113,15 @@ def  forward(self, state):
 	return  self.policy_net(state)
 
 def  get_action(self, state, eval, args):
-	return  self(state).sample(), {} #action + possible additional information to be stored in the memory
+	#return action + possible additional information to be stored in the memory
+	return  self(state).sample(), {} 
 
 def  after_step(self, done, eval, args):
 	if  not  eval:
-		if  self.env_steps % args["train_freq"] == 0  and  	len(self.memory) > 0:
+		if  self.env_steps % args["train_freq"] == 0 and len(self.memory) > 0:
 			#do training
 
-	if done and  eval:
+	if done and eval:
 		#do evaluation
 ```
   
