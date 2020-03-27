@@ -83,6 +83,8 @@ agent=PPOAgent(
 	value_lr=5e-4,
 	policy_lr=5e-4
 ).to(device)
+
+agent.train(env,episodes=1000,train_freq=2048,eval_freq=50,render=True, batch_size=128,gamma=.99,tau=.95,clip=.2,n_steps=32,entropy_coef=.01)
 ```
   
 
