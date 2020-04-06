@@ -20,9 +20,7 @@
 
   
 
-  
-
-#Todo
+ 
 
   
 
@@ -30,14 +28,7 @@
 
 ## 🧐 About <a name = "about"></a>
 
-  
-
-  
-
-#Todo
-
-  
-
+A simple and modular reinforcement learning library based on PyTorch.
   
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
