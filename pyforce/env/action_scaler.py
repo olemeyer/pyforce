@@ -5,10 +5,11 @@ from .base import EnvWrapper
 #Scales the Action Space to a uniform range from 0 to 1
 class _ActionScaler:
   def __init__(self,action_space):
-    lb=action_space.low
-    ub=action_space.high
-    self.scale=ub-lb
-    self.bias=lb
+    if isinstance(action_space,gym.spaces.Box):
+      lb=action_space.low
+      ub=action_space.high
+      self.scale=ub-lb
+      self.bias=lb
     
     if isinstance(action_space,gym.spaces.Box):
       ub=np.ones(action_space.shape)
