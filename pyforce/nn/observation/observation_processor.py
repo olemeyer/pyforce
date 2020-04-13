@@ -19,5 +19,5 @@ class ObservationProcessor(nn.Module):
   def forward(self,x):
     keys=sorted([k for k in x])
     x=[getattr(self,"_{}".format(k))(x[k]) for k in keys]
-    x=torch.cat(x)
+    x=torch.cat(x,-1)
     return x
