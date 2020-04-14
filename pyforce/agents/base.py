@@ -28,7 +28,7 @@ class BaseAgent(nn.Module):
       step=self.env_steps if step is None else step
       self.writer.add_scalar(tag,value,step)
   
-  def train(self,env,episodes=1000,eval_freq=None,**kwargs):
+  def train(self,env,episodes=1000,eval_freq=None,eval_env=None,**kwargs):
     for episode in tqdm(range(episodes)):
       done=False
       state=env.reset()
@@ -44,7 +44,7 @@ class BaseAgent(nn.Module):
       self.env_episodes+=1
 
       if eval_freq is not None and self.env_episodes%eval_freq==0:
-        self.eval(env,episodes=1,**kwargs)
+        self.eval(env if eval_env is None else eval_env,episodes=1,**kwargs)
 
   def eval(self,env,eval_episodes=10,render=False,**kwargs):
     for episode in range(eval_episodes):
