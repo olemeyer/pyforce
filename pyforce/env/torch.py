@@ -23,7 +23,7 @@ class TorchEnv(EnvWrapper):
     if isinstance(x,dict):
       x={k:self.to_tensor(x[k]) for k in x}
       return x
-    if isinstance(x,(float,int)):
+    if isinstance(x,(float,int,bool,np.bool_)):
       x=[x]
     return torch.FloatTensor(x).unsqueeze(0).to(self.device)
 
