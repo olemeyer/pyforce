@@ -43,7 +43,7 @@ class A2CAgent(BaseAgent):
                     self.memory) > 0:
 
                 self.write_scalar("batch/reward_mean",
-                                  self.memory.reward.detach().mean().numpy())
+                                  self.memory.reward.detach().mean().cpu().numpy())
 
                 next_state_value = self.value_net({
                     k: self.memory.next_state[k][-1]
