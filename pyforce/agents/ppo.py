@@ -17,13 +17,14 @@ class PPOAgent(A2CAgent):
                 self.write_scalar("batch/reward_mean",self.memory.reward.detach().mean().cpu().numpy())
 
                 with torch.no_grad():
-                    next_state_value=self.value_net({k:self.memory.next_state[k][-1] for k in self.memory.next_state})
-                    returns=discount(self.memory.reward,self.memory.done,args["gamma"],next_state_value)
+                    next_values=self.value_net(self.memory.next_state).detach()
+                    returns=discount(self.memory.reward,self.memory.done,args["gamma"],next_values)
 
                     values=self.value_net(self.memory.state)
 
-                    advantages=generalized_advantage(args["gamma"],args["tau"],self.memory.reward,self.memory.done,values,next_state_value)
+                    advantages=generalized_advantage(args["gamma"],args["tau"],self.memory.reward,self.memory.done,values,next_values)
                     advantages=(advantages-advantages.mean())/(advantages.std()+1e-6)
+                    
                     old_log_probs=self.policy_net(self.memory.state).log_prob(self.memory.action)
 
                 for _ in range(args["n_steps"]):
