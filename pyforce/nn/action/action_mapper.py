@@ -18,16 +18,26 @@ class DistributionDict(object):
     return x
 
   def entropy(self):
-    x={k:self.distributions[k].entropy() for k in self.distributions}
+    x={k:self.distributions[k].entropy().unsqueeze(0) for k in self.distributions}
     x=[x[k] for k in x]
-    x=torch.cat(x,-1)
+    x=torch.cat(x,0) # action x batch x logprob
+    if len(x.shape)==3:
+      x=x.permute(1,2,0)
+      x=x.mean(-1)
+    else:
+      x=x.permute(1,0)
     return x
 
   def log_prob(self,x):
     #x={k:(x[k]+1)/2 for k in x}
-    x={k:self.distributions[k].log_prob(x[k]) for k in self.distributions}
+    x={k:self.distributions[k].log_prob(x[k]).unsqueeze(0) for k in self.distributions}
     x=[x[k] for k in x]
-    x=torch.cat(x,-1)
+    x=torch.cat(x,0) # action x batch x logprob or action x batch
+    if len(x.shape)==3:
+      x=x.permute(1,2,0)
+      x=x.mean(-1)
+    else:
+      x=x.permute(1,0)
     return x
 
 class CategoricalDistributionAction(nn.Module):

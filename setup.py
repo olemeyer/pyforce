@@ -9,7 +9,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 setup(name="pyforce-rl",
-      version="0.0.9",
+      version="0.0.11",
       author="Ole Meyer",
       author_email="dev@olemeyer.com",
       description=("PyForce - A simple reinforcement learning library"),
