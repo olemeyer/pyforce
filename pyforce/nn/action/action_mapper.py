@@ -72,10 +72,22 @@ class BetaDistributionAction(nn.Module):
 
     return torch.distributions.Beta(x_a,x_b)
 
+class DeterministicContinuousAction(nn.Module):
+    def __init__(self,n_input,n_action):
+        super().__init__()
+        self.net=nn.Sequential(
+            nn.Linear(n_input,n_action),
+            nn.Sigmoid()
+        )
+
+    def forward(self,x):
+        return self.net(x)
+
 
 class ActionMapper(nn.Module):
-  def __init__(self,env,n_input):
+  def __init__(self,env,n_input,deterministic=False):
     super().__init__()
+    self.deterministic=deterministic
     keys=[]
     for k in env.action_space.spaces:
       space=env.action_space.spaces[k]
@@ -83,14 +95,23 @@ class ActionMapper(nn.Module):
       key="_{}".format(k)
       if isinstance(space,gym.spaces.Discrete):
         n_action=space.n
-        setattr(self,key,CategoricalDistributionAction(n_input,n_action))
+        if deterministic:
+          raise NotImplementedError()
+        else:
+          setattr(self,key,CategoricalDistributionAction(n_input,n_action))
       else:
         n_action=space.shape[-1]
-        setattr(self,key,BetaDistributionAction(n_input,n_action))
+        if deterministic:
+          setattr(self,key,DeterministicContinuousAction(n_input,n_action))
+        else:
+          setattr(self,key,BetaDistributionAction(n_input,n_action))
         
   def forward(self,x):
     x_={}
     for k in self._modules:
       x_[k[1:]]=getattr(self,k)(x)
     
+    if self.deterministic:
+      return x_
     return DistributionDict(x_)
+

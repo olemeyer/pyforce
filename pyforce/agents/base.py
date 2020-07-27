@@ -43,7 +43,7 @@ class BaseAgent(nn.Module):
         
       self.env_episodes+=1
 
-      if eval_freq is not None and self.env_episodes%eval_freq==0:
+      if eval_freq is not None and self.env_episodes%eval_freq==0 and ("warmup_steps" not in kwargs or len(self.memory)>kwargs["warmup_steps"]):
         self.eval(env if eval_env is None else eval_env,episodes=1,**kwargs)
 
   def eval(self,env,eval_episodes=10,render=False,**kwargs):

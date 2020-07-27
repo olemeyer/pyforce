@@ -33,7 +33,7 @@ class TorchEnv(EnvWrapper):
     return x
 
   def to_int_if_discrete(self,x,k):
-    if isinstance(self.action_space[k],gym.spaces.Discrete):
+    if isinstance(self.action_space.spaces[k],gym.spaces.Discrete):
       if len(x.shape)>0:
         x=x[0]
       return int(x)
