@@ -16,4 +16,4 @@ agent=TD3Agent(
     actor_lr=1e-3
 ).to(device)
 
-agent.train(env,100000,train_freq=1,batch_size=100,policy_noise=0.,policy_noise_clip=.5,gamma=.99, policy_freq=2, tau=0.005,warmup_steps=10000,buffer_size=50000, exp_noise=.1,eval_freq=1, render=True, eval_episodes=1)
+agent.train(env,100000,train_freq=1,batch_size=100,policy_noise=0.1,policy_noise_clip=.25,gamma=.99, policy_freq=2, tau=0.005,warmup_steps=10000,buffer_size=50000, exp_noise=.1,eval_freq=1, render=True, eval_episodes=1)
