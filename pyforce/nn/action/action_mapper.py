@@ -53,6 +53,25 @@ class CategoricalDistributionAction(nn.Module):
     x_p=self.out_p(x)
     return torch.distributions.Categorical(x_p)
 
+class GaussianDistributionAction(nn.Module):
+  def __init__(self,n_input,n_action):
+      super().__init__()
+      
+      self.out_mu=nn.Sequential(
+          nn.Linear(n_input,n_action)
+      )
+      self.out_sigma=nn.Sequential(
+          nn.Linear(n_input,n_action),
+          nn.Softplus()
+      )
+
+  def forward(self,x):
+    x_mu=self.out_mu(x)
+    x_sigma=self.out_sigma(x)
+
+    return torch.distributions.Normal(x_mu,x_sigma)
+
+
 class BetaDistributionAction(nn.Module):
   def __init__(self,n_input,n_action):
       super().__init__()
@@ -104,7 +123,8 @@ class ActionMapper(nn.Module):
         if deterministic:
           setattr(self,key,DeterministicContinuousAction(n_input,n_action))
         else:
-          setattr(self,key,BetaDistributionAction(n_input,n_action))
+          #setattr(self,key,BetaDistributionAction(n_input,n_action))
+          setattr(self,key,GaussianDistributionAction(n_input,n_action))
         
   def forward(self,x):
     x_={}
